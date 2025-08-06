@@ -8,6 +8,7 @@ const MAX_HISTORY_ITEMS = 5;
 const PASSWORD_CONFIG = {
     localStorageKey: 'passwordVerified',  // 存储验证状态的键名
     verificationTTL: 90 * 24 * 60 * 60 * 1000,  // 验证有效期（90天，约3个月）
+    adminLocalStorageKey: 'adminPasswordVerified'  // 新增的管理员验证状态的键名
 };
 
 // 网站信息配置
@@ -15,7 +16,7 @@ const SITE_CONFIG = {
     name: 'LibreTV',
     url: 'https://libretv.is-an.org',
     description: '免费在线视频搜索与观看平台',
-    logo: './image/retrotv_5520.png',
+    logo: 'image/logo.png',
     version: '1.0.3'
 };
 
@@ -38,10 +39,10 @@ const API_SITES = {
         api: 'https://tyyszy.com/api.php/provide/vod',
         name: '天涯资源',
     },
-    // xiaomaomi: {
-    //     api: 'https://zy.xiaomaomi.cc/api.php/provide/vod',
-    //     name: '小猫咪资源',
-    // },
+    xiaomaomi: {
+        api: 'https://zy.xmm.hk/api.php/provide/vod',
+        name: '小猫咪资源',
+    },
     ffzy: {
         api: 'http://ffzy5.tv/api.php/provide/vod',
         name: '非凡影视',
@@ -74,7 +75,7 @@ const API_SITES = {
         detail: 'https://jszyapi.com', 
     },
     dbzy: {
-        api: 'https://dbzy.com/api.php/provide/vod',
+        api: 'https://dbzy.tv/api.php/provide/vod',
         name: '豆瓣资源',
     },
     mozhua: {
@@ -109,6 +110,10 @@ const API_SITES = {
         api: 'https://ikunzyapi.com/api.php/provide/vod',
         name: 'iKun资源'
     },
+    lzi: {
+        api: 'https://cj.lziapi.com/api.php/provide/vod/',
+        name: '量子资源站'
+    },
     testSource: {
         api: 'https://www.example.com/api.php/provide/vod',
         name: '空内容测试源',
@@ -122,62 +127,72 @@ const API_SITES = {
     // 这些影片和背后的产业已经使数百万男女“下海”，出卖自己的身体，甚至以此为生计。
     // 而作为观众无辜吗？毫无疑问，他们促成了黄色产业链的再生产。
     // 我们提供此警告，是希望您能认清这些内容的本质——它们是压迫和奴役的工具，而非娱乐。
-    // ckzy: {
-    //     api: 'https://www.ckzy1.com',
-    //     name: 'CK资源',
-    //     adult: true
-    // },
-    // jkun: {
-    //     api: 'https://jkunzyapi.com',
-    //     name: 'jkun资源',
-    //     adult: true
-    // },
-    // bwzy: {
-    //     api: 'https://api.bwzym3u8.com',
-    //     name: '百万资源',
-    //     adult: true
-    // },
-    // souav: {
-    //     api: 'https://api.souavzy.vip',
-    //     name: 'souav资源',
-    //     adult: true
-    // },
-    // r155: {
-    //     api: 'https://155api.com',
-    //     name: '155资源',
-    //     adult: true
-    // },
-    // lsb: {
-    //     api: 'https://apilsbzy1.com',
-    //     name: 'lsb资源',
-    //     adult: true
-    // },
-    // huangcang: {
-    //     api: 'https://hsckzy.vip',
-    //     name: '黄色仓库',
-    //     adult: true,
-    //     detail: 'https://hsckzy.vip'
-    // },
-    // yutu: {
-    //     api: 'https://yutuzy10.com',
-    //     name: '玉兔资源',
-    //     adult: true
-    // },
+    ckzy: {
+        api: 'https://www.ckzy1.com',
+        name: 'CK资源',
+        adult: true
+    },
+    jkun: {
+        api: 'https://jkunzyapi.com',
+        name: 'jkun资源',
+        adult: true
+    },
+    bwzy: {
+        api: 'https://api.bwzym3u8.com',
+        name: '百万资源',
+        adult: true
+    },
+    souav: {
+        api: 'https://api.souavzy.vip',
+        name: 'souav资源',
+        adult: true
+    },
+    r155: {
+        api: 'https://155api.com',
+        name: '155资源',
+        adult: true
+    },
+    lsb: {
+        api: 'https://apilsbzy1.com',
+        name: 'lsb资源',
+        adult: true
+    },
+    huangcang: {
+        api: 'https://hsckzy.vip',
+        name: '黄色仓库',
+        adult: true,
+        detail: 'https://hsckzy.vip'
+    },
+    yutu: {
+        api: 'https://yutuzy10.com',
+        name: '玉兔资源',
+        adult: true
+    },
 
     // 下面是资源失效率高的API源，不建议使用
-    // subo: {
-    //     api: 'https://subocaiji.com/api.php/provide/vod',
-    //     name: '速播资源'
-    // },
-    // fczy: {
-    //     api: 'https://api.fczy888.me/api.php/provide/vod',
-    //     name: '蜂巢资源'
-    // },
-    // ukzy: {
-    //     api: 'https://api.ukuapi88.com/api.php/provide/vod',
-    //     name: 'U酷资源'
-    // },
+    subo: {
+        api: 'https://subocaiji.com/api.php/provide/vod',
+        name: '速播资源'
+    },
+    fczy: {
+        api: 'https://api.fczy888.me/api.php/provide/vod',
+        name: '蜂巢资源'
+    },
+    ukzy: {
+        api: 'https://api.ukuapi88.com/api.php/provide/vod',
+        name: 'U酷资源'
+    },
 };
+
+// 定义合并方法
+function extendAPISites(newSites) {
+    Object.assign(API_SITES, newSites);
+}
+
+// 暴露到全局
+window.API_SITES = API_SITES;
+window.extendAPISites = extendAPISites;
+
 
 // 添加聚合搜索的配置选项
 const AGGREGATED_SEARCH_CONFIG = {
